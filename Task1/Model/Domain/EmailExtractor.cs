@@ -1,28 +1,41 @@
-﻿
-
+﻿using System.Globalization;
 using System.Text.RegularExpressions;
 
 namespace Task1.Model.Domain
 {
-    public class UserInfoExtractor
+    public class EmailExtractor
     {
         public List<Dictionary<string, string>> SeparateString(string inputString)
         {
             List<Dictionary<string, string>> separatedLists = new List<Dictionary<string, string>>();
             string[] entries = inputString.Split(new string[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
 
+
             foreach (string entry in entries)
             {
                 string[] parts = entry.Split();
-                string name = string.Join(" ", parts, 0, parts.Length - 1);
+                if (parts.Length < 2)
+                {
+                    Console.WriteLine($"Error: Invalid entry '{entry}'. It should contain at least a first name and an email.");
+                    continue;
+                }
+                string firstName = parts[0];
+                string lastName = string.Join(" ", parts, 1, parts.Length - 2);
                 string email = parts[parts.Length - 1];
 
                 if (IsValidEmail(email))
                 {
                     Dictionary<string, string> entryDict = new Dictionary<string, string>();
-                    entryDict.Add("name", name);
+                    entryDict.Add("firstName", firstName);
+                    entryDict.Add("lastName", lastName);
                     entryDict.Add("email", email);
                     separatedLists.Add(entryDict);
+                }
+                else
+                {
+                    Dictionary<string, string> entryDict = new Dictionary<string, string>();
+                    entryDict.Add("incorrectEmail", email);
+                    Console.WriteLine($"Error: Invalid email '{email}' for entry '{entry}'.");
                 }
             }
             return separatedLists;

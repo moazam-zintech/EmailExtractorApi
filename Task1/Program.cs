@@ -19,8 +19,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 });
 
 //inject repositery
-builder.Services.AddScoped<IUserInfoRepository, UserInfoRepository>();
-builder.Services.AddScoped<UserInfoExtractor>();
+builder.Services.AddScoped<IEmailAddressRepository, EmailAddressRepository>();
+builder.Services.AddScoped<EmailExtractor>();
 
 
 var app = builder.Build();
@@ -33,6 +33,14 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors(options =>
+
+{
+    options.AllowAnyHeader();
+    options.AllowAnyMethod();
+    options.AllowAnyOrigin();
+});
 
 app.UseAuthorization();
 

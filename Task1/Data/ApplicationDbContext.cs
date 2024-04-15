@@ -11,6 +11,6 @@ namespace Task1.Data
         //Create properties
         //userName comes from Domain model 
         //DBset is collection of entities in a relational Databse, 
-        public DbSet<UserInfo> userInfornation { get; set; }
+        public DbSet<EmailAddress> emailAddress { get; set; }
     }
 }
