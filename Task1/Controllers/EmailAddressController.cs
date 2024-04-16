@@ -43,5 +43,31 @@ namespace Task1.Controllers
 			}
 			return Ok();
 		}
-	}
+        [HttpGet]
+        public async Task<IActionResult> GetEmails()
+        {
+           
+                // Retrieve emails from the repository
+                var emails = await _emailAddressRepository.GetAllAsync();
+
+                // If there are no emails found
+                if (emails == null)
+                {
+                    return NotFound("No emails found.");
+                }
+                // Create a DTO (Data Transfer Object) to send to the UI
+                var emailDTOs = new List<EmailDTO>();
+                foreach (var email in emails)
+                {
+                    emailDTOs.Add(new EmailDTO
+                    {
+                        firstName = email.FirstName,
+                        lastName = email.LastName,
+                        email = email.Email
+                    });
+                }
+                // Return the list of emails to the UI
+                return Ok(emailDTOs);
+        }
+    }
 }
