@@ -1,54 +1,37 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Task1.Data;
+﻿using Microsoft.AspNetCore.Mvc;
 using Task1.Model.Domain;
 using Task1.Model.DTO;
-using Task1.Repositories.Implimentation;
 using Task1.Repositories.Interface;
 namespace Task1.Controllers
 {
- [Route("api/[controller]")] //
+    [Route("api/[controller]")] //
 	[ApiController]
-	public class EmailAddressController : ControllerBase
+	public class EmailAddressController(IEmailAddressRepository emailAddressRepository) : ControllerBase
 	{
 		//We can use this private file inside the contoller
-		private readonly IEmailAddressRepository _emailAddressRepository;
-		private readonly EmailExtractor _email;
-		public EmailAddressController(IEmailAddressRepository emailAddressRepository, EmailExtractor email)
-		{
-			this._emailAddressRepository = emailAddressRepository;
-			this._email = email;
-		}
-		[HttpPost]
+		private readonly IEmailAddressRepository _emailAddressRepository = emailAddressRepository;
+
+        [HttpPost]
 		public async Task<IActionResult> CreateEmail(CreateEmailRequestDTO request)
 		{
-			List<Dictionary<string, string>> separatedEmailLists = _email.SeparateString(request.inputString);
-
-            var modifiedEmails = new List<EmailAddress>();
-			var incorrectEmails=new List<EmailAddress>();
+			List<Dictionary<string, string>> separatedEmailLists = _emailAddressRepository.SeparateString(request.inputString);
             foreach (var entry in separatedEmailLists)
             {
 				var emailAddress = new EmailAddress
 				{
 					FirstName = entry["firstName"],
 					LastName = entry["lastName"],
-					Email = entry["email"]
-				};
-                modifiedEmails.Add(emailAddress);
+					Email = entry["email"],
+                };
+                await _emailAddressRepository.CreateAsync(emailAddress);
             }
-			foreach (var modifiedEmail in modifiedEmails)
-			{
-				await _emailAddressRepository.CreateAsync(modifiedEmail);
-			}
-			return Ok();
+            return Ok();
 		}
         [HttpGet]
         public async Task<IActionResult> GetEmails()
         {
-           
-                // Retrieve emails from the repository
-                var emails = await _emailAddressRepository.GetAllAsync();
+             // Retrieve emails from the repository
+            var emails = await _emailAddressRepository.GetAllAsync();
 
                 // If there are no emails found
                 if (emails == null)
@@ -56,18 +39,29 @@ namespace Task1.Controllers
                     return NotFound("No emails found.");
                 }
                 // Create a DTO (Data Transfer Object) to send to the UI
-                var emailDTOs = new List<EmailDTO>();
+             /*   var emailDTOs = new List<EmailDTO>();
                 foreach (var email in emails)
                 {
-                    emailDTOs.Add(new EmailDTO
-                    {
-                        firstName = email.FirstName,
-                        lastName = email.LastName,
-                        email = email.Email
-                    });
-                }
-                // Return the list of emails to the UI
-                return Ok(emailDTOs);
+                emailDTOs.Add(new EmailDTO
+                {
+                    id = email.ID,
+                    firstName = email.FirstName,
+                    lastName = email.LastName,
+                    email = email.Email
+                }) ;*/
+                //}
+            // Return the list of emails to the UI
+
+            return Ok(emails);
         }
+      /*  [HttpDelete]
+        [Route("{id:guid}")]
+        public async Task<IActionResult> DeleteEmail(Guid id)
+        {
+
+            var emails = await _emailAddressRepository.GetByIdAsync(id);
+            return Ok();
+        }*/
+
     }
 }

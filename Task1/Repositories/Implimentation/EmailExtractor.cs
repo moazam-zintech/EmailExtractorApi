@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using System.Text.RegularExpressions;
 
-namespace Task1.Model.Domain
+namespace Task1.Repositories.Implimentation
 {
     public class EmailExtractor
     {
@@ -9,8 +9,6 @@ namespace Task1.Model.Domain
         {
             List<Dictionary<string, string>> separatedLists = new List<Dictionary<string, string>>();
             string[] entries = inputString.Split(new string[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
-
-
             foreach (string entry in entries)
             {
                 string[] parts = entry.Split();
@@ -35,7 +33,10 @@ namespace Task1.Model.Domain
                 {
                     Dictionary<string, string> entryDict = new Dictionary<string, string>();
                     entryDict.Add("incorrectEmail", email);
-                    Console.WriteLine($"Error: Invalid email '{email}' for entry '{entry}'.");
+                    /*           entryDict.Add("incorrectFname", firstName);
+                               entryDict.Add("incorrectLname", lastName);*/
+                    // separatedLists.Add(entryDict);
+                    //Console.WriteLine($"Error: Invalid email '{email}' for entry      '{entry}'.");
                 }
             }
             return separatedLists;
