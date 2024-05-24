@@ -38,30 +38,7 @@ namespace Task1.Controllers
                 {
                     return NotFound("No emails found.");
                 }
-                // Create a DTO (Data Transfer Object) to send to the UI
-             /*   var emailDTOs = new List<EmailDTO>();
-                foreach (var email in emails)
-                {
-                emailDTOs.Add(new EmailDTO
-                {
-                    id = email.ID,
-                    firstName = email.FirstName,
-                    lastName = email.LastName,
-                    email = email.Email
-                }) ;*/
-                //}
-            // Return the list of emails to the UI
-
             return Ok(emails);
         }
-      /*  [HttpDelete]
-        [Route("{id:guid}")]
-        public async Task<IActionResult> DeleteEmail(Guid id)
-        {
-
-            var emails = await _emailAddressRepository.GetByIdAsync(id);
-            return Ok();
-        }*/
-
     }
 }

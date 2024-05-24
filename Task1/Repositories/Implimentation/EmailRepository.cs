@@ -12,7 +12,6 @@ namespace Task1.Repositories.Implimentation
     {
         //We can use this private fild inside the contoller
         private readonly ApplicationDbContext dbContext;
-
         public EmailAddressRepository(ApplicationDbContext dbContext)
         {
             this.dbContext = dbContext;
@@ -29,14 +28,11 @@ namespace Task1.Repositories.Implimentation
         {
             return await dbContext.emailAddress.ToListAsync();
         }
-
-
         public List<Dictionary<string, string>> SeparateString(string inputString)
         {
             List<Dictionary<string, string>> separatedLists = new List<Dictionary<string, string>>();
             string[] entries = inputString.Split(new string[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
-
-
+            
             foreach (string entry in entries)
             {
                 string[] parts = entry.Split();

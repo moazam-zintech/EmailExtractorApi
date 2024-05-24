@@ -19,7 +19,6 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 //inject repositery
 builder.Services.AddScoped<IEmailAddressRepository, EmailAddressRepository>();
-builder.Services.AddScoped<EmailExtractor>();
 
 
 var app = builder.Build();
