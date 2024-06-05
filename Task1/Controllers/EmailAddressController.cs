@@ -10,7 +10,6 @@ namespace Task1.Controllers
 	{
 		//We can use this private file inside the contoller
 		private readonly IEmailAddressRepository _emailAddressRepository = emailAddressRepository;
-
         [HttpPost]
 		public async Task<IActionResult> CreateEmail(CreateEmailRequestDTO request)
 		{
@@ -32,12 +31,31 @@ namespace Task1.Controllers
         {
              // Retrieve emails from the repository
             var emails = await _emailAddressRepository.GetAllAsync();
-
                 // If there are no emails found
                 if (emails == null)
                 {
                     return NotFound("No emails found.");
                 }
+            return Ok(emails);
+        }
+
+
+        [HttpDelete]
+        [Route("{Id:guid}")]
+        public ActionResult DeleteEmail(Guid Id) 
+        {
+            var emails = _emailAddressRepository.DeleteEmail(Id);
+            return Ok();
+        }
+        [HttpGet]
+        [Route("{Id:guid}")]
+        public ActionResult GetById(Guid Id)
+        {
+            var emails = _emailAddressRepository.GetById(Id);
+            if (emails == null)
+            {
+                return NotFound("No emails found.");
+            }
             return Ok(emails);
         }
     }

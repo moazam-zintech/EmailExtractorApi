@@ -17,6 +17,25 @@ namespace Task1.Repositories.Implimentation
             this.dbContext = dbContext;
             //inject DB class which we injected in program.cs
         }
+
+        public async Task<List<EmailAddress>> GetById(Guid id)
+        {
+            var contact = dbContext.emailAddress.Find(id);
+            
+            return await dbContext.emailAddress.ToListAsync();
+        }
+        public async Task<List<EmailAddress>> DeleteEmail(Guid id)
+        {
+                var contact= dbContext.emailAddress.Find(id);
+           
+                dbContext.Remove(contact);
+                dbContext.SaveChanges();
+            
+
+            return await dbContext.emailAddress.ToListAsync();
+        }
+
+
         public async Task<EmailAddress> CreateAsync(EmailAddress email)
         {
             //Now we use injected servises
