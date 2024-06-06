@@ -38,8 +38,6 @@ namespace Task1.Controllers
                 }
             return Ok(emails);
         }
-
-
         [HttpDelete]
         [Route("{Id:guid}")]
         public ActionResult DeleteEmail(Guid Id) 
@@ -57,6 +55,12 @@ namespace Task1.Controllers
                 return NotFound("No emails found.");
             }
             return Ok(emails);
+        }
+       [HttpPut]
+        public ActionResult Edit(Guid Id,EmailAddress request)
+        {
+            _emailAddressRepository.EditByID(Id,request);
+            return Ok();
         }
     }
 }

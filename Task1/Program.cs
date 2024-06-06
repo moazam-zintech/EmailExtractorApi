@@ -15,32 +15,22 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("EmailsDataConnectionString"));
 });
-
-
-
 //inject repositery
 builder.Services.AddScoped<IEmailAddressRepository, EmailAddressRepository>();
-
 var app = builder.Build();
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {   
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
 app.UseHttpsRedirection();
-
 app.UseCors(options =>
 {
     options.AllowAnyHeader();
     options.AllowAnyMethod();
     options.AllowAnyOrigin();
 });
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

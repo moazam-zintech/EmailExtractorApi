@@ -10,6 +10,7 @@ namespace Task1.Repositories.Interface
         public List<Dictionary<string, string>> SeparateString(string inputString);
 
         Task<List<EmailAddress>> DeleteEmail(Guid id);
-        Task<List<EmailAddress>> GetById(Guid id);
+        Task<EmailAddress> GetById(Guid id);
+        Task<EmailAddress> EditByID(Guid Id,EmailAddress emailAddress);
     }
 }

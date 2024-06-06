@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
+﻿using Azure.Core;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
@@ -17,21 +18,31 @@ namespace Task1.Repositories.Implimentation
             this.dbContext = dbContext;
             //inject DB class which we injected in program.cs
         }
+        public async Task<EmailAddress> EditByID(Guid Id, EmailAddress emailAddress )
+        {
 
-        public async Task<List<EmailAddress>> GetById(Guid id)
+            var contact = dbContext.emailAddress.Find(Id);
+            if( contact != null ) 
+            {
+                contact.FirstName = emailAddress.FirstName;
+                contact.LastName = emailAddress.LastName;
+                contact.Email = emailAddress.Email;
+                dbContext.SaveChanges();
+            }
+            return contact;
+        }
+        public async Task<EmailAddress> GetById(Guid id)
         {
             var contact = dbContext.emailAddress.Find(id);
-            
-            return await dbContext.emailAddress.ToListAsync();
+
+            return contact;
         }
         public async Task<List<EmailAddress>> DeleteEmail(Guid id)
         {
                 var contact= dbContext.emailAddress.Find(id);
-           
                 dbContext.Remove(contact);
                 dbContext.SaveChanges();
             
-
             return await dbContext.emailAddress.ToListAsync();
         }
 
