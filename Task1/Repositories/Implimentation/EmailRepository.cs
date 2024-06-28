@@ -4,9 +4,18 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
 using Task1.Data;
+using Task1.Model;
 using Task1.Model.Domain;
 using Task1.Repositories.Interface;
-
+namespace Task1.Model
+{
+    public class StoreProceedure
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public Guid ID { get; set; }
+    }
+}
 namespace Task1.Repositories.Implimentation
 {
     public class EmailAddressRepository : IEmailAddressRepository
@@ -18,11 +27,12 @@ namespace Task1.Repositories.Implimentation
             this.dbContext = dbContext;
             //inject DB class which we injected in program.cs
         }
-        public async Task<EmailAddress> EditByID(Guid Id, EmailAddress emailAddress )
+
+        public async Task<EmailAddress> EditByID(Guid Id, EmailAddress emailAddress)
         {
 
             var contact = dbContext.emailAddress.Find(Id);
-            if( contact != null ) 
+            if (contact != null)
             {
                 contact.FirstName = emailAddress.FirstName;
                 contact.LastName = emailAddress.LastName;
@@ -39,10 +49,10 @@ namespace Task1.Repositories.Implimentation
         }
         public async Task<List<EmailAddress>> DeleteEmail(Guid id)
         {
-                var contact= dbContext.emailAddress.Find(id);
-                dbContext.Remove(contact);
-                dbContext.SaveChanges();
-            
+            var contact = dbContext.emailAddress.Find(id);
+            dbContext.Remove(contact);
+            dbContext.SaveChanges();
+
             return await dbContext.emailAddress.ToListAsync();
         }
 
@@ -58,11 +68,15 @@ namespace Task1.Repositories.Implimentation
         {
             return await dbContext.emailAddress.ToListAsync();
         }
+        public async Task<List<StoreProceedure>> GetAllAsyncSP()
+        {
+            return await dbContext.storePro.FromSqlRaw("Test").ToListAsync();
+        }
         public List<Dictionary<string, string>> SeparateString(string inputString)
         {
             List<Dictionary<string, string>> separatedLists = new List<Dictionary<string, string>>();
             string[] entries = inputString.Split(new string[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
-            
+
             foreach (string entry in entries)
             {
                 string[] parts = entry.Split();

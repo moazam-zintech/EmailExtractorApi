@@ -38,6 +38,14 @@ namespace Task1.Controllers
                 }
             return Ok(emails);
         }
+
+        [HttpGet("SP")]
+        public async Task<IActionResult> GetEmailsSP()
+        {
+            // Retrieve emails from the repository
+            var emails = await _emailAddressRepository.GetAllAsyncSP();
+            return Ok(emails);
+        }
         [HttpDelete]
         [Route("{Id:guid}")]
         public ActionResult DeleteEmail(Guid Id) 

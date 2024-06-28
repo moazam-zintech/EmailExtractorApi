@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Task1.Model;
 using Task1.Model.Domain;  
 namespace Task1.Data
 {
@@ -12,5 +13,7 @@ namespace Task1.Data
         //userName comes from Domain model 
         //DBset is collection of entities in a relational Databse, 
         public DbSet<EmailAddress> emailAddress { get; set; }
+        public DbSet<StoreProceedure> storePro { get; set; }
+
     }
 }
